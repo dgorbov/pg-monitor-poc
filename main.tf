@@ -13,5 +13,6 @@ data "aws_vpc" "default" {
 }
 
 output "demodb_password" {
-  value = random_password.demodb_password.result
+  value     = random_password.demodb_password.result
+  sensitive = true
 }

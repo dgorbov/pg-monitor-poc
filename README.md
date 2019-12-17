@@ -13,4 +13,5 @@ Concept includes only part of the monitoring solution: AWS RDS PostgreSQL, DB pa
 ### In case you need execute it first time on your local environment and AWS part has been already setted up
 1. Setup your `AWS_PROFILE` via aws_cli or via text editor inside `~/.aws` in `config` and `credentials` files
 2. Configure backend: `terraform init -backend-config="bucket=pg-monitor-poc-terraform-state" -backend-config="region=eu-central-1" -backend-config="profile=default"`
-3. change values of `profile`, `bucket` and `region` according to your initial backend configuration
+3. Change values of `profile`, `bucket` and `region` according to your initial backend configuration
+4. Create `terraform.tfvars` file and set value for `LOCAL_CIDR` to make DB connections

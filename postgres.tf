@@ -58,6 +58,7 @@ resource "aws_db_instance" "demodb" {
   backup_window           = "03:00-06:00"
   # disable backups to create DB faster
   backup_retention_period = 0
+  skip_final_snapshot     = true
 }
 
 resource "random_password" "demodb_password" {
