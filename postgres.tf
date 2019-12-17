@@ -39,6 +39,7 @@ resource "aws_db_parameter_group" "postgres_pg" {
 }
 
 resource "aws_db_instance" "demodb" {
+  count                  = var.create_db ? 1 : 0
   engine                 = "postgres"
   engine_version         = "9.6.11"
   instance_class         = "db.t2.micro"

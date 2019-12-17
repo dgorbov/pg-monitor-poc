@@ -6,6 +6,10 @@ variable "aws_profile" {
   default = "default"
 }
 
+variable "create_db" {
+  type = bool
+}
+
 variable "allowed_cidr" {
   type = list(string)
 }

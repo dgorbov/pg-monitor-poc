@@ -21,13 +21,18 @@ resource "aws_security_group" "allow_ssh_exporter" {
   }
 }
 
-data "aws_ami" "aws_optimized_ami" {
+data "aws_ami" "ubuntu_latest" {
   most_recent = true
-  owners      = ["137112412989"] # AWS
+  owners      = ["099720109477"] #Canonical
 
   filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm*"]
+    name = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+  }
+
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
   }
 
   filter {
@@ -56,7 +61,7 @@ resource "aws_spot_instance_request" "exporter_instance" {
   wait_for_fulfillment = true
   spot_type            = "one-time"
 
-  ami                         = data.aws_ami.aws_optimized_ami.id
+  ami                         = data.aws_ami.ubuntu_latest.id
   instance_type               = var.exporter_instance_cfg.instance_type
   associate_public_ip_address = true
   subnet_id                   = tolist(data.aws_subnet_ids.default_vpc_subnets.ids)[0]
