@@ -7,3 +7,11 @@ provider "aws" {
   region  = var.AWS_REGION
   profile = var.AWS_PROFILE
 }
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+output "demodb_password" {
+  value = random_password.demodb_password.result
+}
