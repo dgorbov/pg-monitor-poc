@@ -2,7 +2,7 @@ resource "aws_db_parameter_group" "postgres_pg" {
   name   = "postgres-full-monitoring"
   family = "postgres9.6"
 
- # just to keep here. Put it to 'none'. Can log diffrent queries. No need if log_min_duration_statement is 0.
+  # just to keep here. Put it to 'none'. Can log diffrent queries. No need if log_min_duration_statement is 0.
   parameter {
     name  = "log_statement"
     value = "none"
@@ -21,48 +21,48 @@ resource "aws_db_parameter_group" "postgres_pg" {
   }
 
   parameter {
-    name          = "shared_preload_libraries"
-    value         = "pg_stat_statements"
-    apply_method  = "pending-reboot"
+    name         = "shared_preload_libraries"
+    value        = "pg_stat_statements"
+    apply_method = "pending-reboot"
   }
 
   parameter {
-    name = "pg_stat_statements.track"
+    name  = "pg_stat_statements.track"
     value = "ALL"
   }
 
   parameter {
-    name  = "track_activity_query_size"
-    value = "2048"
-    apply_method  = "pending-reboot"
+    name         = "track_activity_query_size"
+    value        = "2048"
+    apply_method = "pending-reboot"
   }
 }
 
 resource "aws_db_instance" "demodb" {
-  engine                  = "postgres"
-  engine_version          = "9.6.11"
-  instance_class          = "db.t2.micro"
-  allocated_storage       = 5
-  storage_type            = "gp2"
-  parameter_group_name    = aws_db_parameter_group.postgres_pg.name
-  multi_az                = "false"
-  publicly_accessible     = "true"
-  vpc_security_group_ids  = [aws_security_group.allow_postgre_connection.id]
+  engine                 = "postgres"
+  engine_version         = "9.6.11"
+  instance_class         = "db.t2.micro"
+  allocated_storage      = 5
+  storage_type           = "gp2"
+  parameter_group_name   = aws_db_parameter_group.postgres_pg.name
+  multi_az               = "false"
+  publicly_accessible    = "true"
+  vpc_security_group_ids = [aws_security_group.allow_postgre_connection.id]
 
-  identifier              = "demodb-server"
-  name                    = "demodb"
-  username                = "postgres"
-  password                = random_password.demodb_password.result
+  identifier = "demodb-server"
+  name       = "demodb"
+  username   = "postgres"
+  password   = random_password.demodb_password.result
 
-  maintenance_window      = "Mon:00:00-Mon:03:00"
-  backup_window           = "03:00-06:00"
+  maintenance_window = "Mon:00:00-Mon:03:00"
+  backup_window      = "03:00-06:00"
   # disable backups to create DB faster
   backup_retention_period = 0
   skip_final_snapshot     = true
 }
 
 resource "random_password" "demodb_password" {
-  length = 16
+  length  = 16
   special = false
 }
 
@@ -81,7 +81,7 @@ resource "aws_security_group" "allow_postgre_connection" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.default.cidr_block, var.LOCAL_CIDR]
+    cidr_blocks = concat(var.allowed_cidr, [data.aws_vpc.default.cidr_block])
   }
   tags = {
     Name = "allow_postgre_connection"

@@ -11,7 +11,14 @@ Concept includes only part of the monitoring solution: AWS RDS PostgreSQL, DB pa
 1. Go to `backend_setup/`, review command parametrs (do not forget s3-buckets uniq name rule), run following command: `terraform apply -var 'AWS_REGION=eu-central-1' -var 'AWS_PROFILE=default' -var 'S3_BUCKET_NAME=pg-monitor-poc-terraform-state'`
 2. Follow instruction bellow to connect your backend.
 ### In case you need execute it first time on your local environment and AWS part has been already setted up
-1. Setup your `AWS_PROFILE` via aws_cli or via text editor inside `~/.aws` in `config` and `credentials` files
+1. Setup your `aws_profile` via aws_cli or via text editor inside `~/.aws` in `config` and `credentials` files
 2. Configure backend: `terraform init -backend-config="bucket=pg-monitor-poc-terraform-state" -backend-config="region=eu-central-1" -backend-config="profile=default"`
 3. Change values of `profile`, `bucket` and `region` according to your initial backend configuration
-4. Create `terraform.tfvars` file and set value for `LOCAL_CIDR` to make DB connections
+4. Create `terraform.tfvars` file and customize values:
+```
+allowed_cidr = ["XXX.XXX.XXX.XXX/32"]
+exporter_instance_cfg = {
+  spot_price    = 0.0018
+  instance_type = "t3.nano"
+}
+```
