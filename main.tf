@@ -30,3 +30,7 @@ output "exporter_pk" {
 output "exporter_ip" {
   value = aws_spot_instance_request.exporter_instance.public_ip
 }
+
+output "demodb_endpoint" {
+  value = aws_db_instance.demodb.*.endpoint
+}
