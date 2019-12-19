@@ -1,0 +1,9 @@
+---
+ansible_ssh_private_key_file    : ${EXPORTER_PK}    
+ansible_user                    : ubuntu
+postgres_host                   : ${PG_HOST}
+postgres_port                   : ${PG_PORT}
+postgres_db                     : ${PG_DB_NAME}
+postgres_user                   : ${PG_USER}
+postgres_pwd                    : ${PG_PWD}
+...
