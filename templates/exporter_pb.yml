@@ -1,0 +1,11 @@
+---
+- name: Prepare exporter
+  hosts: exporter
+
+  tasks:
+  - name: Install PostgreSQL
+    apt: 
+      update_cache: yes
+      name: ['postgresql', 'postgresql-contrib']
+      state: present
+    become: yes

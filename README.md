@@ -7,6 +7,9 @@ Concept includes only part of the monitoring solution: AWS RDS PostgreSQL, DB pa
 - To mininise costs of poc maintanece we will turn on/off solution when it is needed plus we will use spot instances 
 
 ## Setup
+### Software requirements
+1. `Terraform v0.12.12` and above
+2. `ansible 2.9.2` and above
 ### In case you need execute it first time on AWS account
 1. Go to `backend_setup/`, review command parametrs (do not forget s3-buckets uniq name rule), run following command: `terraform apply -var 'AWS_REGION=eu-central-1' -var 'AWS_PROFILE=default' -var 'S3_BUCKET_NAME=pg-monitor-poc-terraform-state'`
 2. Follow instruction bellow to connect your backend.
@@ -16,9 +19,14 @@ Concept includes only part of the monitoring solution: AWS RDS PostgreSQL, DB pa
 3. Change values of `profile`, `bucket` and `region` according to your initial backend configuration
 4. Create `terraform.tfvars` file and customize values:
 ```
+create_db    = true
 allowed_cidr = ["XXX.XXX.XXX.XXX/32"]
 exporter_instance_cfg = {
   spot_price    = 0.0018
   instance_type = "t3.nano"
 }
 ```
+### Run project with following commands
+1. `terraform apply`
+2. `cd out`
+3. `ansible-playbook exporter_pb.yml`

@@ -27,3 +27,8 @@ resource "local_file" "exporter_host_vars" {
   })
   filename = "out/host_vars/exporter.yml"
 }
+
+resource "local_file" "exporter_pb" {
+  content  = file("templates/exporter_pb.yml")
+  filename = "out/exporter_pb.yml"
+}
