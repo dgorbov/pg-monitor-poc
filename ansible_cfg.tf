@@ -32,3 +32,8 @@ resource "local_file" "exporter_pb" {
   content  = file("templates/exporter_pb.yml")
   filename = "out/exporter_pb.yml"
 }
+
+resource "local_file" "endless_pgbench" {
+  content = file("templates/endless_pgbench.sh")
+  filename = "out/endless_pgbench.sh"
+}

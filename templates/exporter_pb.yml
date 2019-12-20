@@ -2,10 +2,40 @@
 - name: Prepare exporter
   hosts: exporter
 
-  tasks:
+  tasks:  
   - name: Install PostgreSQL
-    apt: 
+    apt:
       update_cache: yes
       name: ['postgresql', 'postgresql-contrib']
       state: present
     become: yes
+
+  - name: Copy endles pgbench shell script
+    copy:
+      src: ./endless_pgbench.sh
+      dest: ~/
+      mode: 0755
+    notify: Restart script
+
+  - meta: flush_handlers
+
+  - name: Check if script is running
+    shell: "ps -ef | grep endless_pgbench.sh | grep -v grep | awk '{print $2}'"
+    register: script_pid
+
+  - name: Run endless pgbench
+    shell: ./endless_pgbench.sh > ./endless_pgbench.log 2>&1 &
+    environment:
+      PGHOST: "{{ postgres_host }}"
+      PGPORT: "{{ postgres_port }}"
+      PGDATABASE: "{{ postgres_db }}"
+      PGUSER: "{{ postgres_user }}"
+      PGPASSWORD: "{{ postgres_pwd }}"
+    async: 10
+    poll: 0
+    when: script_pid.stdout == ""
+
+  handlers:
+  - name: Restart script
+    shell: "kill -9 -$(ps -o pgid= $(ps -ef | grep endless_pgbench.sh | grep -v grep | awk '{print $2}') | grep -o '[0-9]*')"
+...
