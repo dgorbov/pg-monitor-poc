@@ -1,5 +1,5 @@
 ---
-ansible_ssh_private_key_file    : ${EXPORTER_PK}    
+ansible_ssh_private_key_file    : ${PGBENCH_PK}    
 ansible_user                    : ubuntu
 postgres_host                   : ${PG_HOST}
 postgres_port                   : ${PG_PORT}

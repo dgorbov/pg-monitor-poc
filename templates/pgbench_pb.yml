@@ -1,6 +1,6 @@
 ---
-- name: Prepare exporter
-  hosts: exporter
+- name: Prepare pgbench
+  hosts: pgbench
 
   tasks:  
   - name: Install PostgreSQL

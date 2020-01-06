@@ -1,1 +1,1 @@
-exporter ansible_host=${EXPORTER_IP}
+pgbench ansible_host=${PGBENCH_IP}

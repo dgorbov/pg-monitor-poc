@@ -16,6 +16,6 @@ data "aws_subnet_ids" "default_vpc_subnets" {
   vpc_id = data.aws_vpc.default.id
 }
 
-output "exporter_ip" {
-  value = aws_spot_instance_request.exporter_instance.public_ip
+output "pgbench_ip" {
+  value = aws_spot_instance_request.pgbench_instance.public_ip
 }

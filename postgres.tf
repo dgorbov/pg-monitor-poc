@@ -1,5 +1,5 @@
-resource "aws_db_parameter_group" "postgres_pg" {
-  name   = "postgres-full-monitoring"
+resource "aws_db_parameter_group" "postgres_demodb_pg" {
+  name   = "postgres-demodb-full-monitoring"
   family = "postgres9.6"
 
   # just to keep here. Put it to 'none'. Can log diffrent queries. No need if log_min_duration_statement is 0.
@@ -45,10 +45,10 @@ resource "aws_db_instance" "demodb" {
   instance_class         = "db.t2.micro"
   allocated_storage      = 10
   storage_type           = "gp2"
-  parameter_group_name   = aws_db_parameter_group.postgres_pg.name
+  parameter_group_name   = aws_db_parameter_group.postgres_demodb_pg.name
   multi_az               = "false"
   publicly_accessible    = "true"
-  vpc_security_group_ids = [aws_security_group.allow_postgre_connection.id]
+  vpc_security_group_ids = [aws_security_group.allow_demodb_connection.id]
 
   identifier = "demodb-server"
   name       = "demodb"
@@ -67,9 +67,9 @@ resource "random_password" "demodb_password" {
   special = false
 }
 
-resource "aws_security_group" "allow_postgre_connection" {
+resource "aws_security_group" "allow_demodb_connection" {
   vpc_id      = data.aws_vpc.default.id
-  name        = "allow_postgre_connection"
+  name        = "allow_demodb_connection"
   description = "Allows access to postgre db on port 5432 from VPC and some IPs if posgre db has option for public access"
   egress {
     from_port   = 0
@@ -85,6 +85,6 @@ resource "aws_security_group" "allow_postgre_connection" {
     cidr_blocks = concat(var.allowed_cidr, [data.aws_vpc.default.cidr_block])
   }
   tags = {
-    Name = "allow_postgre_connection"
+    Name = "allow_demodb_connection"
   }
 }

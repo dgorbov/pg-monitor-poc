@@ -14,8 +14,8 @@ variable "allowed_cidr" {
   type = list(string)
 }
 
-variable "exporter_instance_cfg" {
-  description = "Spot instances configuration for the exporter."
+variable "pgbench_instance_cfg" {
+  description = "Spot instances configuration for the pgbench."
   type = object({
     spot_price    = number
     instance_type = string
